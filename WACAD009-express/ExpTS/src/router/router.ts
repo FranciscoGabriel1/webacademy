@@ -1,31 +1,19 @@
-import express, { Request, Response } from "express"
-import { loremIpsum } from "lorem-ipsum";
+import express  from 'express';
+import mainController from '../controllers/main';
 
 const router = express.Router();
 
-router.use("/", (req: Request, res: Response) => {
-     res.send("Hello world!");
-});
-
-router.get("/about", (req: Request, res: Response) => {
-     res.send("Sobre!");
-});
-
-router.get('/lorem/:paragrafos',(req,res)=>{
-res.send(
-loremIpsum({
-  count: 3,               
-  format: "html",         
-  paragraphLowerBound: 3,  
-  paragraphUpperBound: 7,  
-  random: Math.random,     
-  sentenceLowerBound: 5,   
-  sentenceUpperBound: 15,  
-  suffix: "\n",            
-  units: "paragraph",      
- })
-);
-})
+router.get('/about', mainController.about);
+router.get('/lorem/:paragrafos', mainController.lorem);
+router.get('/hb1', mainController.hb1);
+router.get('/hb2', mainController.hb2);
+router.get('/hb3', mainController.hb3);
+router.get('/hb4',mainController.hb4);
 
 export default router;
 
+/*
+router.use("/", (req: Request, res: Response) => {
+     res.send("Hello world!");
+});
+*/
