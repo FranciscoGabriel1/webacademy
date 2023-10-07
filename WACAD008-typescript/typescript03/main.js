@@ -64,21 +64,23 @@ function removeFromCart(index) {
     const productModel = document.getElementById('productModel').value;
     const productManufacturer = document.getElementById('productManufacturer').value;
     const productPrice = parseFloat(document.getElementById('productPrice').value);
+    let product; // Initialize as undefined
     if (!isNaN(productPrice)) {
-        let product;
         if (productType === 'TV') {
-            const resolution = ''; // Adicione a resolução aqui
-            const sizeInInches = 0; // Adicione o tamanho em polegadas aqui
+            const resolution = '';
+            const sizeInInches = 0;
             product = new TV(productModel, productManufacturer, productPrice, resolution, sizeInInches);
         }
         else if (productType === 'Celular') {
-            const memory = ''; // Adicione a memória aqui
+            const memory = '';
             product = new CellPhone(productModel, productManufacturer, productPrice, memory);
         }
         else if (productType === 'Bicicleta') {
-            const wheelSize = 0; // Adicione o tamanho do aro aqui
+            const wheelSize = 0;
             product = new Bicycle(productModel, productManufacturer, productPrice, wheelSize);
         }
+    }
+    if (product) {
         shoppingCart.addProduct(product);
         document.getElementById('productModel').value = '';
         document.getElementById('productManufacturer').value = '';

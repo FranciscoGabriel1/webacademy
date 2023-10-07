@@ -58,31 +58,33 @@
             shoppingCart.removeProduct(index);
         }
 
-        document.getElementById('productForm')?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const productType = (document.getElementById('productType') as HTMLSelectElement).value;
-            const productModel = (document.getElementById('productModel') as HTMLInputElement).value;
-            const productManufacturer = (document.getElementById('productManufacturer') as HTMLInputElement).value;
-            const productPrice = parseFloat((document.getElementById('productPrice') as HTMLInputElement).value);
+       document.getElementById('productForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const productType = (document.getElementById('productType') as HTMLSelectElement).value;
+    const productModel = (document.getElementById('productModel') as HTMLInputElement).value;
+    const productManufacturer = (document.getElementById('productManufacturer') as HTMLInputElement).value;
+    const productPrice = parseFloat((document.getElementById('productPrice') as HTMLInputElement).value);
 
-            if (!isNaN(productPrice)) {
-                let product: Product;
+    let product: Product | undefined; 
 
-                if (productType === 'TV') {
-                    const resolution = ''; // é possível adiconar a resolução aqui
-                    const sizeInInches = 0; // é possível adiconar o tamanho em polegadas aqui
-                    product = new TV(productModel, productManufacturer, productPrice, resolution, sizeInInches);
-                } else if (productType === 'Celular') {
-                    const memory = ''; // é possível adiconar a memória aqui
-                    product = new CellPhone(productModel, productManufacturer, productPrice, memory);
-                } else if (productType === 'Bicicleta') {
-                    const wheelSize = 0; // é possível adiconar o tamanho do aro aqui
-                    product = new Bicycle(productModel, productManufacturer, productPrice, wheelSize);
-                }
+    if (!isNaN(productPrice)) {
+        if (productType === 'TV') {
+            const resolution = '';
+            const sizeInInches = 0;
+            product = new TV(productModel, productManufacturer, productPrice, resolution, sizeInInches);
+        } else if (productType === 'Celular') {
+            const memory = '';
+            product = new CellPhone(productModel, productManufacturer, productPrice, memory);
+        } else if (productType === 'Bicicleta') {
+            const wheelSize = 0;
+            product = new Bicycle(productModel, productManufacturer, productPrice, wheelSize);
+        }
+    }
 
-                shoppingCart.addProduct(product);
-                (document.getElementById('productModel') as HTMLInputElement).value = '';
-                (document.getElementById('productManufacturer') as HTMLInputElement).value = '';
-                (document.getElementById('productPrice') as HTMLInputElement).value = '';
-            }
-        });
+    if (product) {
+        shoppingCart.addProduct(product);
+        (document.getElementById('productModel') as HTMLInputElement).value = '';
+        (document.getElementById('productManufacturer') as HTMLInputElement).value = '';
+        (document.getElementById('productPrice') as HTMLInputElement).value = '';
+    }
+});
