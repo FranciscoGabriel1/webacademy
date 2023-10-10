@@ -22,13 +22,13 @@ const about = (req: Request, res: Response) => {
 };
 
 const hb1 = (req: Request, res: Response) => {
-  res.render('hb1', {
+  res.render('main/hb1', {
     mensagem: 'Olá, você está aprendendo Express + HBS!',
   });
 };
 
 const hb2 = (req: Request, res: Response) => {
-  res.render('hb2', {
+  res.render('main/hb2', {
     poweredByNodejs: true,
     name: 'Express',
     type: 'Framework',
@@ -55,7 +55,7 @@ const hb3 = (req: Request, res: Response) => {
     },
   ];
 
-  res.render('hb3', { profs });
+  res.render('main/hb3', { profs });
 };
 
 const hb4 = function (req: Request, res: Response) {
@@ -68,11 +68,19 @@ const hb4 = function (req: Request, res: Response) {
     { name: 'Docker', type: 'Virtualization', poweredByNodejs: false },
     { name: 'Sequelize', type: 'ORM tool', poweredByNodejs: true },
   ];
-  res.render('hb4', { technologies });
+  res.render('main/hb4', { technologies });
 };
 
 const index = (req: Request, res: Response) => {
   res.render('/', { layout: 'hb2' });
 };
 
-export default { lorem, about, hb1, hb2, hb3, hb4, index };
+const paginaComImagem = (req: Request, res: Response) => {
+  res.render('main/paginaComImagem')
+}
+
+const ui = (req: Request, res: Response) => {
+  res.render('main/ui')
+}
+
+export default { lorem, about, hb1, hb2, hb3, hb4, index, paginaComImagem,ui };
