@@ -1,0 +1,1 @@
+console.log("Oi, eu sou um console :-) e estou em js/script.js")
