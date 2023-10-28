@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Numeroserie {
+  NumSerieID  String   @id @default(uuid()) @map("NumSerieID") @db.Char(40)
+  NumeroSerie String   @db.Char(255)
+  Produto     Produto? @relation(fields: [ProdutoID], references: [ProdutoID])
+  ProdutoID   String?
+
+  @@map("numeroserie")
+}
+
+model Compra {
+  CompraID         String          @id @default(uuid()) @map("CompraID")
+  DataHoraCompra   DateTime?
+  DescontoAplicado Decimal?        @db.Decimal(5, 2)
+  FormaPagamento   String?         @db.Char(255)
+  TotalCompra      Decimal?        @db.Decimal(10, 2)
+  Endereco         Endereco?       @relation(fields: [EnderecoID], references: [EnderecoID])
+  Cliente          Cliente?        @relation(fields: [ClienteID], references: [ClienteID])
+  EnderecoID       String?
+  ClienteID        String?
+  ItensDaCompra    ItensDaCompra[]
+
+  @@map("compra")
+}
+
+model Produto {
+  ProdutoID            String          @id @default(uuid()) @map("ProdutoID")
+  Modelo               String          @db.Char(255)
+  Fabricante           String?         @db.Char(255)
+  PrecoBase            Decimal?        @db.Decimal(10, 2)
+  QuantidadeDisponivel Int?
+  Subcategoria         Subcategoria?   @relation(fields: [SubcategoriaID], references: [SubcategoriaID])
+  SubcategoriaID       String?
+  Numeroserie          Numeroserie[]
+  ItensDaCompra        ItensDaCompra[]
+  createdAt            DateTime        @default(now()) @map("created_at")
+  updatedAt            DateTime        @updatedAt @map("updated_at")
+
+  @@map("produto")
+}
+
+model Cliente {
+  ClienteID      String    @id @default(uuid()) @map("ClienteID")
+  NomeCompleto   String    @db.VarChar(100)
+  CPF            String    @unique @db.VarChar(14)
+  NumeroCelular  String?   @db.VarChar(20)
+  Email          String?   @db.VarChar(255)
+  DataNascimento DateTime?
+  Compras        Compra[]
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@map("cliente")
+}
+
+model Endereco {
+  EnderecoID String   @id @default(uuid()) @map("EnderecoID")
+  Rua        String   @db.Char(255)
+  Cidade     String?  @db.Char(255)
+  Estado     String?  @db.Char(50)
+  CEP        String?  @db.Char(10)
+  Compras    Compra[]
+
+  @@map("endereco")
+}
+
+model Categoria {
+  CategoriaID   String         @id @default(uuid()) @map("CategoriaID")
+  NomeCategoria String         @db.Char(255)
+  Subcategoria  Subcategoria[]
+
+  @@map("categoria")
+}
+
+model Subcategoria {
+  SubcategoriaID   String    @id @default(uuid()) @map("SubcategoriaID")
+  NomeSubcategoria String    @db.Char(255)
+  CategoriaID      String
+  Categoria        Categoria @relation(fields: [CategoriaID], references: [CategoriaID])
+  Produtos         Produto[]
+
+  @@map("subcategoria")
+}
+
+model ItensDaCompra {
+  ProdutoID  String
+  CompraID   String
+  quantidade Int?
+  Produto    Produto @relation(fields: [ProdutoID], references: [ProdutoID])
+  Compra     Compra  @relation(fields: [CompraID], references: [CompraID])
+
+  @@id([ProdutoID, CompraID])
+  @@map("itenscompra")
+}
