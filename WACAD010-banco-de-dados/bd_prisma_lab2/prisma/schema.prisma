@@ -35,14 +35,14 @@ model Produto {
   ProdutoID            String          @id @default(uuid()) @map("ProdutoID")
   Modelo               String          @db.Char(255)
   Fabricante           String?         @db.Char(255)
-  PrecoBase            Decimal?        @db.Decimal(10, 2)
+  PrecoBase            Decimal?        @db.Decimal(9, 2)
   QuantidadeDisponivel Int?
   Subcategoria         Subcategoria?   @relation(fields: [SubcategoriaID], references: [SubcategoriaID])
   SubcategoriaID       String?
   Numeroserie          Numeroserie[]
   ItensDaCompra        ItensDaCompra[]
   createdAt            DateTime        @default(now()) @map("created_at")
-  updatedAt            DateTime        @updatedAt @map("updated_at")
+  updatedAt            DateTime?       @default(now()) @updatedAt @map("updated_at")
 
   @@map("produto")
 }
@@ -56,7 +56,7 @@ model Cliente {
   DataNascimento DateTime?
   Compras        Compra[]
   createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
+  updatedAt      DateTime? @default(now()) @updatedAt @map("updated_at")
 
   @@map("cliente")
 }
