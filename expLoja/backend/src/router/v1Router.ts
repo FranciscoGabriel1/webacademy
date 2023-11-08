@@ -10,6 +10,6 @@ const router = Router();
 router.use("/produto", produtoRouter);
 router.use("/change", languageRouter);
 router.use("/usuario", usuarioRouter);
-router.use("/auth", authRouter);
+router.use("/", authRouter);
 
 export default router;
