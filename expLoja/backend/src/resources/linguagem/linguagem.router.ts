@@ -1,8 +1,8 @@
 import { Router } from "express";
-import validate from "../../middleware/validate";
-import linguagemController from "../linguagem/linguagem.controller";
-import { linguagemSchema } from "./linguagem.schemas";
+import languageController from "./linguagem.controller";
+import { linguagem } from "./linguagem.schema";
+import validate from "../../middlewares/validate";
 
 const router = Router();
-
-router.post("/change", validate(linguagemSchema),linguagemController.changeLang);
+router.post("/change", validate(linguagem), languageController.changeLanguage);
+export default router;

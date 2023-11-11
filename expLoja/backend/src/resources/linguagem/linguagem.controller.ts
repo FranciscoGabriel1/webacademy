@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 
- function changeLang (req: Request, res: Response){
-    const lang = req.body.lang;
-    res.cookie("lang", lang);
-    res.status(200).json({lang});
+function changeLanguage(req: Request, res: Response) {
+  const { lang } = req.body;
+  res.cookie("lang", lang);
+  res.json({ lang });
 }
-
-export default {changeLang};
+export default { changeLanguage };
