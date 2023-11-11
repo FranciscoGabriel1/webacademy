@@ -1,90 +1,122 @@
-import { PrismaClient, Usuario } from "@prisma/client";
-<<<<<<< Updated upstream
-import { CreateUsuarioDto, UpdateUsuarioDto } from "./usuario.types";
+import bcrypt from "bcryptjs";
+import { PrismaClient } from "@prisma/client";
+import {
+  CreateUsuarioDto,
+  UsuarioSemSenhaDto,
+  UpdateUsuarioDto,
+} from "./usuario.types";
+const prisma = new PrismaClient();
 import { TiposUsuarios } from "../tipoUsuario/tipoUsuario.constants";
-import { genSalt, hash } from "bcryptjs";
 
-const prisma = new PrismaClient();
-
-export async function getUsuarios(tipoUsuario: TiposUsuarios): Promise<Usuario[]> {
-    return await prisma.usuario.findMany({ where: { tipoUsuarioId: tipoUsuario } });
-}
-
-export async function getAllUsuarios(): Promise<Usuario[]> {
-    return await prisma.usuario.findMany();
-}
-export async function createUsuario(Usuario: CreateUsuarioDto
-): Promise<Usuario> {
-    const rounds = parseInt(process.env.SALT_ROUNDS!);
-    const salt = await genSalt(rounds);
-    const senha = await hash(Usuario.senha, salt);
-    return await prisma.usuario.create({
-        data: {
-            ...
-            Usuario,
-            senha
-        }
+export async function getUsuarios(
+  tipo?: TiposUsuarios
+): Promise<UsuarioSemSenhaDto[]> {
+  if (!tipo)
+    return prisma.usuario.findMany({
+      select: {
+        id: true,
+        tipoUsuarioId: true,
+        nome: true,
+        email: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
-}
-
-export async function jaExiste(email: string): Promise<boolean> {
-    return !!(await prisma.usuario.findUnique({ where: { email } }))
-}
-
-export async function readUsuarioByEmail(email: string): Promise<Usuario | null> {
-    return await prisma.usuario.findUnique({ where: { email } });
-}
-
-export async function readUsuario(id: string): Promise<Usuario | null> {
-    return await prisma.usuario.findUnique({ where: { id } });
-}
-
-export async function updateUsuario(id: string,
-    Usuario: UpdateUsuarioDto)
-    : Promise<Usuario> {
-    return await prisma.usuario.update({ data: Usuario, where: { id: id } });
-}
-
-export async function deleteUsuario(id: string): Promise<void> {
-    await prisma.usuario.delete({ where: { id: id } });
-}
-=======
-import { CreateUsuarioDTO } from "./usuario.types";
-import { Request, Response } from "express";
-
-const prisma = new PrismaClient();
-
-export async function createUsuario(
-  usuario: CreateUsuarioDTO
-): Promise<Usuario> {
-  return await prisma.usuario.create({
-    data: usuario,
+  return prisma.usuario.findMany({
+    where: { tipoUsuarioId: tipo },
+    select: {
+      id: true,
+      tipoUsuarioId: true,
+      nome: true,
+      email: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 }
 
-export async function findUsuarioByEmail(
+export const createUsuario = async (
+  usuario: CreateUsuarioDto
+): Promise<UsuarioSemSenhaDto> => {
+  const rounds = parseInt(process.env.SALT_ROUNDS!);
+  const salt = await bcrypt.genSalt(rounds);
+  const hash = await bcrypt.hash(usuario.senha, salt);
+  const newUsuario = await prisma.usuario.create({
+    data: {
+      ...usuario,
+      senha: hash,
+    },
+  });
+  return {
+    id: newUsuario.id,
+    tipoUsuarioId: newUsuario.tipoUsuarioId,
+    nome: newUsuario.nome,
+    email: newUsuario.email,
+    createdAt: newUsuario.createdAt,
+    updatedAt: newUsuario.updatedAt,
+  };
+};
+
+export const updateUsuario = async (
+  id: string,
+  usuario: UpdateUsuarioDto
+): Promise<UsuarioSemSenhaDto> => {
+  const updatedUsuario = await prisma.usuario.update({
+    data: usuario,
+    where: { id },
+  });
+  return {
+    id: updatedUsuario.id,
+    tipoUsuarioId: updatedUsuario.tipoUsuarioId,
+    nome: updatedUsuario.nome,
+    email: updatedUsuario.email,
+    createdAt: updatedUsuario.createdAt,
+    updatedAt: updatedUsuario.updatedAt,
+  };
+};
+
+export const buscaUsuarioPorEmail = async (
   email: string
-): Promise<Usuario | null> {
-  return await prisma.usuario.findUnique({ where: { email } });
-}
+): Promise<UsuarioSemSenhaDto | null> => {
+  return await prisma.usuario.findUnique({
+    select: {
+      id: true,
+      tipoUsuarioId: true,
+      nome: true,
+      email: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+    where: { email },
+  });
+};
 
-export async function findUsuarioById(id: string): Promise<Usuario | null> {
-  return await prisma.usuario.findUnique({ where: { id } });
-}
+export const buscaUsuarioPorId = async (
+  id: string
+): Promise<UsuarioSemSenhaDto | null> => {
+  return await prisma.usuario.findUnique({
+    select: {
+      id: true,
+      tipoUsuarioId: true,
+      nome: true,
+      email: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+    where: { id },
+  });
+};
 
-export function getUsuarios(tipo?: string): Promise<Usuario[]> {
-  if (!tipo) return prisma.usuario.findMany();
-  return prisma.usuario.findMany({ where: { tipoUsuarioId: tipo } });
-}
-
-async function read(req: Request, res: Response) {
-  const id = req.params.id;
-  try {
-    const usuario = await findUsuarioById(id);
-    if (!usuario)
-      return res.status(400).json({ msg: "Nao existe usuario com esse ID" });
-  } catch (err) {
-    console.log("error: ", err);
-  }
-}
->>>>>>> Stashed changes
+export const deleteUsuario = async (
+  id: string
+): Promise<UsuarioSemSenhaDto> => {
+  const deletedUsuario = await prisma.usuario.delete({ where: { id } });
+  return {
+    id: deletedUsuario.id,
+    tipoUsuarioId: deletedUsuario.tipoUsuarioId,
+    nome: deletedUsuario.nome,
+    email: deletedUsuario.email,
+    createdAt: deletedUsuario.createdAt,
+    updatedAt: deletedUsuario.updatedAt,
+  };
+};

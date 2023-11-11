@@ -1,15 +1,41 @@
 import { Router } from "express";
 
-import produtoRouter from "../resources/produto/produto.router";
-import languageRouter from "../resources/linguagem/linguagem.router";
-import usuarioRouter from "../resources/usuario/usuario.router";
 import authRouter from "../resources/auth/auth.router";
+import produtoRouter from "../resources/produto/produto.router";
+import compraRouter from "../resources/compra/compra.router";
+import usuarioRouter from "../resources/usuario/usuario.router";
+import linguagemRouter from "../resources/linguagem/linguagem.router";
 
 const router = Router();
 
-router.use("/produto", produtoRouter);
-router.use("/change", languageRouter);
-router.use("/usuario", usuarioRouter);
-router.use("/", authRouter);
+router.use(
+  "/auth",
+  // #swagger.tags = ['Auth']
+  authRouter
+);
+
+router.use(
+  "/produto",
+  // #swagger.tags = ['Produto']
+  produtoRouter
+);
+
+router.use(
+  "/compra",
+  // #swagger.tags = ['Compra']
+  compraRouter
+);
+
+router.use(
+  "/usuario",
+  // #swagger.tags = ['Usuario']
+  usuarioRouter
+);
+
+router.use(
+  "/linguagem",
+  // #swagger.tags = ['Linguagem']
+  linguagemRouter
+);
 
 export default router;

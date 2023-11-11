@@ -1,5 +1,7 @@
-import Joi, { Schema } from "joi";
+import Joi from "joi";
 
-export const linguagem: Schema = Joi.object().keys({
+const linguagemSchema = Joi.object().keys({
   lang: Joi.string().valid("pt-BR", "en-US").required(),
 });
+
+export default linguagemSchema;

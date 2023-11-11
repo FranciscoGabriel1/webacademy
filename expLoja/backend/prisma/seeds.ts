@@ -1,48 +1,22 @@
 import { PrismaClient } from "@prisma/client";
 import { TiposUsuarios } from "../src/resources/tipoUsuario/tipoUsuario.constants";
-<<<<<<< Updated upstream
-
 const prisma = new PrismaClient();
 
-async function tipoUsuarioSeeds() {
-    await prisma.tipoUsuario.createMany({
-        data: [
-            { id: TiposUsuarios.CLIENT, rotulo: "cliente" },
-            { id: TiposUsuarios.ADMIN, rotulo: "admin" },
-        ],
-        skipDuplicates: true,
-    });
-}
-
-tipoUsuarioSeeds().then(async () => {
-    await prisma.$disconnect()
-})
-    .catch(async (e) => {
-        console.error(e)
-        await prisma.$disconnect()
-
-    })
-=======
-const prisma = new PrismaClient();
-
-async function tipoUsuarioSeeds() {
+async function main() {
   await prisma.tipoUsuario.createMany({
     data: [
-      {
-        id: TiposUsuarios.ADMIN,
-        rotulo: "admin",
-      },
-      { id: TiposUsuarios.CLIENT, rotulo: "client" },
+      { id: TiposUsuarios.CLIENT, rotulo: "cliente" },
+      { id: TiposUsuarios.ADMIN, rotulo: "admin" },
     ],
     skipDuplicates: true,
   });
 }
 
-tipoUsuarioSeeds()
-  .then(() => {
-    prisma.$disconnect();
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
   })
-  .catch((err) => {
-    prisma.$disconnect();
+  .finally(async () => {
+    await prisma.$disconnect();
   });
->>>>>>> Stashed changes

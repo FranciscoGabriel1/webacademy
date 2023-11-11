@@ -1,11 +1,11 @@
 import { Usuario } from "@prisma/client";
 
-<<<<<<< Updated upstream
-export type CreateUsuarioDto = Pick<Usuario, 'nome' | 'email' | 'senha' | 'tipoUsuarioId'>;
-export type UpdateUsuarioDto = Pick<Usuario, 'nome' | 'email' | 'senha'>;
-=======
-export type CreateUsuarioDTO = Pick<
+export type CreateUsuarioDto = Pick<
   Usuario,
-  "nome" | "email" | "senha" | "tipoUsuarioId"
+  "tipoUsuarioId" | "nome" | "email" | "senha"
 >;
->>>>>>> Stashed changes
+export type UsuarioSemSenhaDto = Omit<Usuario, "senha">;
+export type UpdateUsuarioDto = Pick<
+  Usuario,
+  "tipoUsuarioId" | "nome" | "email" | "senha"
+>;
