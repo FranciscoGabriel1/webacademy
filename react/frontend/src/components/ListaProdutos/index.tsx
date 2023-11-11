@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import CustomTable, { TableColumn } from "../Tabela";
+import ConfirmationModal from "../Confirmacao";
 
 interface IProduto {
+  id: number;
   nome: string;
   preco: number;
   estoque: number;
@@ -11,16 +14,42 @@ export default function ListaProdutos() {
   const [precoProduct, SetPrecoProduct] = useState<number>(0);
   const [estoqueProduct, SetEstoqueProduct] = useState<number>(0);
 
-  //   const [products, SetProducts] = useState<string[]>([]);
+  const productToDelete = useRef<IProduto>();
+
+  const [isModalConfirmationOpen, SetIsModalConfirmationOpen] = useState(false);
+
   const [products, SetProducts] = useState<IProduto[]>([]);
+
+  function RemoverItemTabela(produtoToDelete: IProduto) {
+    SetProducts(
+      products.filter((produto) => produto.id !== produtoToDelete.id)
+    );
+  }
+
+  const columnsProducts: TableColumn<IProduto>[] = [
+    { head: "ID", acessor: "id" },
+    { head: "Nome", acessor: "nome" },
+    { head: "Estoque", acessor: "estoque" },
+    { head: "Preco", acessor: "preco" },
+    {
+      head: "Remover",
+      isActionButton: true,
+      onActionClick: (obj) => {
+        productToDelete.current = obj;
+        SetIsModalConfirmationOpen(true);
+        //RemoverItemTabela(obj);
+      },
+    },
+    { head: "Editar", isActionButton: true },
+  ];
 
   function AddProductArray() {
     const jsonProduto: IProduto = {
+      id: products.length + 1,
       nome: nameProduct,
       estoque: estoqueProduct,
       preco: precoProduct,
     };
-
     SetProducts([...products, jsonProduto]);
   }
 
@@ -47,16 +76,20 @@ export default function ListaProdutos() {
       />
       <button onClick={() => AddProductArray()}>Inserir Produto</button>
 
-      {products.map((produto) => {
-        return (
-          <div>
-            <h3>Nome: {produto.nome}</h3>
-            <h4>Preco: {produto.preco}</h4>
-            <h5>Estoque: {produto.estoque}</h5>
-          </div>
-        );
-      })}
+      <CustomTable data={products} columns={columnsProducts} />
+
+      <ConfirmationModal
+        isShow={isModalConfirmationOpen}
+        message="Deseja excluir esse produto?"
+        title="Alerta"
+        onCancel={() => {
+          SetIsModalConfirmationOpen(false);
+        }}
+        onConfirm={() => {
+          RemoverItemTabela(productToDelete.current!);
+          SetIsModalConfirmationOpen(false);
+        }}
+      />
     </div>
   );
 }
-

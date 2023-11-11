@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { Request, Response } from "express";
 import { getAllUsuarios, createUsuario, jaExiste, readUsuario, updateUsuario, deleteUsuario, getUsuarios, readUsuarioByEmail } from "./usuario.service";
 import { CreateUsuarioDto, UpdateUsuarioDto } from "./usuario.types";
@@ -78,3 +79,14 @@ async function remove(req: Request, res: Response) {
 }
 
 export default { index, read, readEmail, create, update, remove };
+=======
+import { Response, Request } from "express";
+
+function index(req: Request, res: Response) {}
+function create(req: Request, res: Response) {}
+function read(req: Request, res: Response) {}
+function update(req: Request, res: Response) {}
+function remove(req: Request, res: Response) {}
+
+export default { index, create, read, update, remove };
+>>>>>>> Stashed changes

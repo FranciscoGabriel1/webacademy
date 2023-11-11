@@ -1,4 +1,5 @@
 import { PrismaClient, Usuario } from "@prisma/client";
+<<<<<<< Updated upstream
 import { CreateUsuarioDto, UpdateUsuarioDto } from "./usuario.types";
 import { TiposUsuarios } from "../tipoUsuario/tipoUsuario.constants";
 import { genSalt, hash } from "bcryptjs";
@@ -47,3 +48,43 @@ export async function updateUsuario(id: string,
 export async function deleteUsuario(id: string): Promise<void> {
     await prisma.usuario.delete({ where: { id: id } });
 }
+=======
+import { CreateUsuarioDTO } from "./usuario.types";
+import { Request, Response } from "express";
+
+const prisma = new PrismaClient();
+
+export async function createUsuario(
+  usuario: CreateUsuarioDTO
+): Promise<Usuario> {
+  return await prisma.usuario.create({
+    data: usuario,
+  });
+}
+
+export async function findUsuarioByEmail(
+  email: string
+): Promise<Usuario | null> {
+  return await prisma.usuario.findUnique({ where: { email } });
+}
+
+export async function findUsuarioById(id: string): Promise<Usuario | null> {
+  return await prisma.usuario.findUnique({ where: { id } });
+}
+
+export function getUsuarios(tipo?: string): Promise<Usuario[]> {
+  if (!tipo) return prisma.usuario.findMany();
+  return prisma.usuario.findMany({ where: { tipoUsuarioId: tipo } });
+}
+
+async function read(req: Request, res: Response) {
+  const id = req.params.id;
+  try {
+    const usuario = await findUsuarioById(id);
+    if (!usuario)
+      return res.status(400).json({ msg: "Nao existe usuario com esse ID" });
+  } catch (err) {
+    console.log("error: ", err);
+  }
+}
+>>>>>>> Stashed changes
