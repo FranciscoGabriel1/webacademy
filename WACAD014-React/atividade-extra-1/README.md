@@ -15,7 +15,7 @@ npm install
 ## Executar
 
 ```
-yarn dev 
+yarn start
 ```
 
 ou 

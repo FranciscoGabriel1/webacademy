@@ -4,7 +4,7 @@ import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CustomTable, { TableColumn } from "./components/Tabela";
-import { Product } from "./components/Types";
+import { Product } from "./Types";
 
 const App: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -67,7 +67,6 @@ const App: React.FC = () => {
                 alt={selectedProduct.title}
                 style={{ width: 100 }}
               />
-              {/* Adicione mais informações conforme necessário */}
             </div>
           )}
         </Modal.Body>
