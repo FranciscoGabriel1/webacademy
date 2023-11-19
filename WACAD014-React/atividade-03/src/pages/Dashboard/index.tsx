@@ -1,36 +1,78 @@
-import  {useEffect, useState} from 'react';
-import axios from "axios";
-import CardBasic from '../../components/CardBasic/index';
-import Carousel from '../../components/Carousel/index';
-import { Movie } from '../../types/index';
+import { useState, useEffect } from "react";
+import { Container, Row } from "react-bootstrap";
+import {
+  getMoviesByGenre,
+  getPopularMovies,
+  getTopRatedMovies,
+} from "../../api";
+import RenderMovie from "../../components/RenderMovie";
+import Typography from "../../components/Typography";
 
-const Dashboard: React.FC = () => {
+function Dashboard() {
+  const [popularMovies, setPopularMovies] = useState([]);
+  const [topRatedMovies, setTopRatedMovies] = useState([]);
+  const [comedyMovies, setComedyMovies] = useState([]);
+  const [actionMovies, setActionMovies] = useState([]);
+  const [adventureMovies, setAdventureMovies] = useState([]);
+  const [romanceMovies, setRomanceMovies] = useState([]);
 
-const [movies, setMovies] = useState<Movie>([]);
+  useEffect(() => {
+    const fetchPopularMovies = async () => {
+      const movies = await getPopularMovies();
+      setPopularMovies(movies);
+    };
 
-useEffect(() => {
-    axios
-      .get("https://api.themoviedb.org/3/movie/157336?api_key=45a661ec36028f10352bfea959c32a79&append_to_response=videos,images")
-      .then((response) => setMovies(response.data))
-      .catch((error) => console.error("Erro ao buscar dados da API:", error));
+    const fetchTopRatedMovies = async () => {
+      const movies = await getTopRatedMovies();
+      setTopRatedMovies(movies);
+    };
+
+    const fetchMoviesByGenre = async (genreId: any, setStateFunction: any) => {
+      const movies = await getMoviesByGenre(genreId);
+      setStateFunction(movies);
+    };
+
+    fetchPopularMovies();
+    fetchTopRatedMovies();
+    fetchMoviesByGenre(35, setComedyMovies);
+    fetchMoviesByGenre(28, setActionMovies);
+    fetchMoviesByGenre(12, setAdventureMovies);
+    fetchMoviesByGenre(10749, setRomanceMovies);
   }, []);
 
-  console.log("movies: ", movies)
-
   return (
-  <div>
-   
+    <Container>
+      <Row style={{ marginTop: 40 }}>
+        <Typography title="Novidades da Netflix" />
+        <RenderMovie movies={popularMovies} />
+      </Row>
 
-   <Carousel>
-     <CardBasic title={movies.title} overview={movies.overview} poster_path={movies.poster_path}/>
-      <CardBasic title={movies.title} overview={movies.overview} poster_path={movies.poster_path}/>
-       <CardBasic title={movies.title} overview={movies.overview} poster_path={movies.poster_path}/>
-        <CardBasic title={movies.title} overview={movies.overview} poster_path={movies.poster_path}/>
-   </Carousel>
+      <Row style={{ marginTop: 40 }}>
+        <Typography title="Filmes mais curtidos" />
+        <RenderMovie movies={topRatedMovies} />
+      </Row>
 
- 
-  </div>
-);
+      <Row style={{ marginTop: 40 }}>
+        <Typography title="Filmes de comédia" />
+        <RenderMovie movies={comedyMovies} />
+      </Row>
+
+      <Row style={{ marginTop: 40 }}>
+        <Typography title="Filmes de ação" />
+        <RenderMovie movies={actionMovies} />
+      </Row>
+
+      <Row style={{ marginTop: 40 }}>
+        <Typography title="Filmes de aventura" />
+        <RenderMovie movies={adventureMovies} />
+      </Row>
+
+      <Row style={{ marginTop: 40 }}>
+        <Typography title="Filmes de romance" />
+        <RenderMovie movies={romanceMovies} />
+      </Row>
+    </Container>
+  );
 }
 
 export default Dashboard;
