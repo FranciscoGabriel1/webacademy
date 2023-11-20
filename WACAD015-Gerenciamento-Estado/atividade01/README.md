@@ -20,7 +20,8 @@ yarn dev
 
 ou 
 ```
-npm dev 
+npm run dev 
 ```
 ## Resultado
-![atividade01reactjs](https://github.com/FranciscoGabriel1/webacademy/assets/46074137/02a2fecd-c26c-4db9-b453-450c70e14cc9)
+![redux1](https://github.com/FranciscoGabriel1/webacademy/assets/46074137/b7604493-d306-4a60-90d8-6fcd441a5742)
+
