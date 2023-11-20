@@ -1,10 +1,9 @@
-// src/redux/todoSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Task {
   name: string;
   completed: boolean;
-  completedAt?: string; // Nova propriedade para armazenar a data de conclusão
+  completedAt?: string;
 }
 
 interface TodoState {
@@ -35,7 +34,6 @@ const todoSlice = createSlice({
       const index = action.payload;
       const task = state.todoList[index];
 
-      // Adiciona ou remove a data de conclusão
       task.completedAt = task.completed
         ? undefined
         : new Date().toLocaleString();
