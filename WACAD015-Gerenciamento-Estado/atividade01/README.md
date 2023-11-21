@@ -3,13 +3,13 @@
 ## Instalaçao
 
 ```
-yarn install 
-```  
+yarn install
+```
 
-Ou 
+Ou
 
 ```
-npm install 
+npm install
 ```
 
 ## Executar
@@ -18,10 +18,10 @@ npm install
 yarn dev
 ```
 
-ou 
-```
-npm run dev 
-```
-## Resultado
-![redux1](https://github.com/FranciscoGabriel1/webacademy/assets/46074137/b7604493-d306-4a60-90d8-6fcd441a5742)
+ou
 
+```
+npm run dev
+```
+
+## Resultado
