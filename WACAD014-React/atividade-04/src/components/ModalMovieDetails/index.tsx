@@ -66,7 +66,20 @@ const ModalMovieDetails: React.FC<ModalMovieDetailsProps> = ({
                 />
               </Col>
               <Col>
-                {" "}
+                <Row>
+                  <Col style={{ display: "flex", justifyContent: "flex-end" }}>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={() => handleAddToFavorites(selectedMovie)}
+                      disabled={isAddedToFavorites}
+                      style={{ margin: 10 }}
+                    >
+                      {isAddedToFavorites
+                        ? "Já adicionado aos Favoritos"
+                        : "Adicionar aos Favoritos"}
+                    </button>
+                  </Col>
+                </Row>
                 {renderFormItem(
                   "Média de avaliações",
                   selectedMovie.vote_average
@@ -95,19 +108,6 @@ const ModalMovieDetails: React.FC<ModalMovieDetailsProps> = ({
                   selectedMovie.revenue.toLocaleString("pt-BR")
                 )}
                 {renderFormItem("Imbd", selectedMovie.imdb_id)}
-              </Col>
-            </Row>
-            <Row>
-              <Col style={{ display: "flex", justifyContent: "center" }}>
-                <button
-                  className="btn btn-primary"
-                  onClick={() => handleAddToFavorites(selectedMovie)}
-                  disabled={isAddedToFavorites}
-                >
-                  {isAddedToFavorites
-                    ? "Já adicionado aos Favoritos"
-                    : "Adicionar aos Favoritos"}
-                </button>
               </Col>
             </Row>
           </Modal.Body>
