@@ -49,10 +49,17 @@ function verifyStockAvailability(productType, qty) {
  */
 function calculateTotalPrice(products) {
   let total = 0;
-  for (let i = 0; i < products.length; i++) {
-    total = products[i].price;
+  
+  for (const product of products) {
+    if (!product.hasOwnProperty('price') || !product.hasOwnProperty('quantity')) {
+      throw new Error('o objeto do produto deve ter as propriedades price e quantity.');
+    }
+
+    total += product.price * product.quantity;  // Corrigido para multiplicar o preço pelo quantidade
   }
+
   return total;
 }
+
 
 module.exports = { firstName, verifyStockAvailability, calculateTotalPrice };
