@@ -28,4 +28,12 @@ export interface MovieDetails {
   genres?: Array<{ id?: number; name?: string }> | undefined;
   revenue: number;
   imdb_id: string;
+  id: string;
+}
+
+export interface Recommendation {
+  page: number;
+  results: Movie[];
+  total_pages: number;
+  total_results: number;
 }

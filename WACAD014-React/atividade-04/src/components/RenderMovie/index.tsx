@@ -34,7 +34,7 @@ const RenderMovie = ({ movies }: any) => {
         autoPlay
       >
         {movies.map((movie: any) => (
-          <div
+          <> <div
             key={movie.id}
             onClick={() => handleOpenModal(movie.id)}
             style={{ width: "100%" }}
@@ -44,7 +44,7 @@ const RenderMovie = ({ movies }: any) => {
               style={{ height: 300, width: "auto" }}
               src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
             />
-          </div>
+          </div></>
         ))}
       </ResponsiveCarousel>
 

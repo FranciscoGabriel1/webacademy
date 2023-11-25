@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from "react";
 import { Container, Row } from "react-bootstrap";
 import {
@@ -5,8 +6,10 @@ import {
   getPopularMovies,
   getTopRatedMovies,
 } from "../../api";
-import RenderMovie from "../../components/RenderMovie";
-import Typography from "../../components/Typography";
+import CustomNavbar from "../../components/NavBar/index";
+import RenderMovie from "../../components/RenderMovie/index";
+
+import Typography from "../../components/Typography/index";
 
 function Dashboard() {
   const [popularMovies, setPopularMovies] = useState([]);
@@ -42,33 +45,34 @@ function Dashboard() {
 
   return (
     <Container>
-      <Row style={{ marginTop: 40 }}>
+      <CustomNavbar />
+      <Row style={{ marginTop: 76 }}>
         <Typography title="Novidades da Netflix" />
         <RenderMovie movies={popularMovies} />
       </Row>
 
       <Row style={{ marginTop: 40 }}>
-        <Typography title="Filmes mais curtidos" />
+        <Typography title="Filmes mais Curtidos" />
         <RenderMovie movies={topRatedMovies} />
       </Row>
 
       <Row style={{ marginTop: 40 }}>
-        <Typography title="Filmes de comédia" />
+        <Typography title="Filmes de Comédia" />
         <RenderMovie movies={comedyMovies} />
       </Row>
 
       <Row style={{ marginTop: 40 }}>
-        <Typography title="Filmes de ação" />
+        <Typography title="Filmes de Ação" />
         <RenderMovie movies={actionMovies} />
       </Row>
 
       <Row style={{ marginTop: 40 }}>
-        <Typography title="Filmes de aventura" />
+        <Typography title="Filmes de Aventura" />
         <RenderMovie movies={adventureMovies} />
       </Row>
 
       <Row style={{ marginTop: 40 }}>
-        <Typography title="Filmes de romance" />
+        <Typography title="Filmes de Romance" />
         <RenderMovie movies={romanceMovies} />
       </Row>
     </Container>

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, Form, Card, Col, Row } from "react-bootstrap";
 import { MovieDetails } from "../../types";
+import moment from "moment";
 
 interface ModalMovieDetailsProps {
   showModal: boolean;
@@ -13,6 +14,8 @@ const ModalMovieDetails: React.FC<ModalMovieDetailsProps> = ({
   handleCloseModal,
   selectedMovie,
 }) => {
+  const [isAddedToFavorites, setIsAddedToFavorites] = useState(false);
+
   const renderFormItem = (
     label: string,
     value: string | number | undefined
@@ -24,6 +27,24 @@ const ModalMovieDetails: React.FC<ModalMovieDetailsProps> = ({
       <br />
     </>
   );
+
+  const handleAddToFavorites = (movie: MovieDetails) => {
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+    // Verifica se o filme já está nos favoritos
+    const isMovieInFavorites = favorites.some(
+      (fav: MovieDetails) => fav.id === movie.id
+    );
+
+    if (!isMovieInFavorites) {
+      favorites.push(movie);
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+      setIsAddedToFavorites(true);
+      alert("Filme adicionado aos Favoritos!");
+    } else {
+      alert("Este filme já está nos Favoritos!");
+    }
+  };
 
   return (
     <Modal show={showModal} onHide={handleCloseModal} size="lg">
@@ -59,15 +80,34 @@ const ModalMovieDetails: React.FC<ModalMovieDetailsProps> = ({
                 {renderFormItem("Tagline", selectedMovie.tagline)}
                 {renderFormItem(
                   "Data de Lançamento",
-                  selectedMovie.release_date
+                  moment(selectedMovie.release_date).format("DD/MM/YYYY")
                 )}
-                {renderFormItem("Duração do filme", selectedMovie.runtime)}
+                {renderFormItem(
+                  "Duração do filme",
+                  selectedMovie.runtime + " min"
+                )}
                 {renderFormItem(
                   "Gênero",
                   selectedMovie.genres?.map((genre) => genre.name).join(", ")
                 )}
-                {renderFormItem("Receita gerada", selectedMovie.revenue)}
+                {renderFormItem(
+                  "Receita gerada R$ ",
+                  selectedMovie.revenue.toLocaleString("pt-BR")
+                )}
                 {renderFormItem("Imbd", selectedMovie.imdb_id)}
+              </Col>
+            </Row>
+            <Row>
+              <Col style={{ display: "flex", justifyContent: "center" }}>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleAddToFavorites(selectedMovie)}
+                  disabled={isAddedToFavorites}
+                >
+                  {isAddedToFavorites
+                    ? "Já adicionado aos Favoritos"
+                    : "Adicionar aos Favoritos"}
+                </button>
               </Col>
             </Row>
           </Modal.Body>

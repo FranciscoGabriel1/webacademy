@@ -1,4 +1,4 @@
-# Atividade 01 - ReactJs - ToDo List
+# Atividade 04 - ReactJs - MovieDb carousel Add Favorites
 
 ## Instalaçao
 
@@ -22,5 +22,5 @@ ou
 ```
 npm dev 
 ```
-## Resultado
-![atividade01reactjs](https://github.com/FranciscoGabriel1/webacademy/assets/46074137/02a2fecd-c26c-4db9-b453-450c70e14cc9)
+Arquivo api.ts 'const apiKey = "insira a chave da api";' para ter acesso ao retorno dos dados 
+da api https://www.themoviedb.org/
