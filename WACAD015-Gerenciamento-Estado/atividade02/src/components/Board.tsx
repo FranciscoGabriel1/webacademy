@@ -30,6 +30,7 @@ const Board: React.FC = () => {
 
   const winner = calculateWinner(squares);
   const nextPlayerIsX = squares.filter(Boolean).length % 2 === 0;
+  const isBoardFull = squares.every((square) => square !== null);
 
   const handleClick = (i: number) => {
     if (squares[i] || winner) {
@@ -47,9 +48,14 @@ const Board: React.FC = () => {
     window.location.reload();
   };
 
-  const status = winner
-    ? `Venceu --> ${winner} 🥇🎊🎉`
-    : `A próxima jogada é: ${nextPlayerIsX ? "X" : "O"}`;
+  let status;
+  if (winner) {
+    status = `Venceu --> ${winner} 🥇🎊🎉`;
+  } else if (isBoardFull) {
+    status = "Empate!";
+  } else {
+    status = `A próxima jogada é: ${nextPlayerIsX ? "X" : "O"}`;
+  }
 
   return (
     <div>
@@ -57,7 +63,13 @@ const Board: React.FC = () => {
         style={{
           display: "flex",
           justifyContent: "center",
-          color: winner ? "#29CC7A" : "#292841",
+          color: winner
+            ? "#29CC7A"
+            : "#292841"
+            ? isBoardFull
+              ? "#FFB869"
+              : "#292841"
+            : "",
           fontSize: "3.6rem",
         }}
       >
@@ -85,7 +97,7 @@ const Board: React.FC = () => {
 
         <div
           style={{
-            display: winner ? "flex" : "none",
+            display: winner || isBoardFull ? "flex" : "none",
             justifyContent: "center",
             color: winner ? "#29CC7A" : "#292841",
             fontSize: "3.6rem",
